@@ -3,20 +3,184 @@ title: "Email Template"
 description: "How to design email template using either drag and drop editor or code editor."
 ---
 
-## Design Template
+SuprSend let's you design & personalize responsive templates for your email notifications with a variety of options and functionalities. You can event re-use a single template for different users, tenants, and events - instead of manually creating separate ones for each use case.
 
-You can start designing beautiful HTML email with the drag & drop tool provided. You can add variables with Handlebarsjs language.
+## Designing Email Templates
 
-The email template has 3 parts -
-  - **Body** (permanent background),
-  - **Blocks** (each block contains different types of content),
-  - **Content** (add Heading, Images, buttons, tables here).
+<Steps>
+  <Step title="Navigating to the template page" stepNumber="1">
+  On the left side-bar on SuprSend's [Dashboard](https://app.suprsend.com/en/staging), select `Templates`. Now, click on `New Template` and give it a name.
+  </Step>
+  <Step title="Enabling the email channel" stepNumber="2">
+  A new template page will open. Here, select the notification channel as `Email`, and click on `Enable Channel`.
+  </Step>
+<Step title="Choosing the editor" stepNumber="3">
+ You will land onto a blank page of the drag-and-drop editor. Find items and contents to add onto your template from the right-section of the editor. [Know about each section in detail.](/docs/email-template#)
 
-The email designed is responsive, you can see how the template looks on desktop and mobile by clicking on preview bar in bottom left corner.
+ ![](/images/docs/email-template-editor-menu.png)
+
+  SuprSend supports two ways to design emails:
+  - **HTML editor** - Direct code-based editor for custom HTML emails. (best for migrating existing templates from cross-platform tools)
+  - **Drag-and-drop editor** - (recommended) visual editor to build layouts visually without code.
+
+</Step>
+</Steps>
+
+### Using HTML Editor
+
+If you're migrating from another platform or already have HTML templates, the HTML editor is the best option to directly import your existing code into SuprSend.
+
+You can `switch to HTML editor` using the toggle button at the bottom of the editor.
+
+<Warning>
+  The template preview in SuprSend may not exactly match how it renders in email clients like Gmail or Outlook.
+
+  Many email clients strip out `<script>` tags and some `<style>` blocks, which can break formatting or layout.
+
+  For compatibility, refer to [Campaign Monitor's CSS Support Guide](https://www.campaignmonitor.com/css/) to verify which styles are supported across major email clients.
+</Warning>
+
+
+### Using Drag & Drop Editor
+
+This is the default editor you will land after creating a new template. It allows you to visually build responsive email templates without writing code.
+
+Email Template is composed of three following categories in the drag-and-drop editor:
+  - **Body**- The outermost background and global settings (e.g., width, font, alignment).
+  - **Blocks**- Rows that define the layout structure (e.g., one-column, two-column).
+  - **Content**- Elements placed inside blocks, like: headings, text, buttons, images, tables, etc.
+  - **Images**- Search and add images to your template.
+  - **Upload**- To insert images by uploding.
+
+You can drag and place the components as required. The email designed would be responsive. This could be previewed by clicking on preview bar in bottom left corner, for each desktopm and mobile view.
+Learn more about [Email Preview](/docs/email-template#email-preview).
+
+After preparing your template, the next step is to add other details like subject, from name, from email, reply to and email markup.
+  ![](/images/docs/drag-and-drop.gif)
+
+### Responsive Design Tips
+
+Emails designed in the drag-and-drop editor are responsive by default. This means the layout will automatically adjust for mobile and desktop views when sent to users.
+
+You can preview how your template will look across devices by using the `Preview` bar in the bottom left corner.
 
 ![2482](/images/docs/ab6f529-Screenshot_2021-10-19_at_4.12.49_PM.png "Screenshot 2021-10-19 at 4.12.49 PM.png")
 
-To add other details (subject, from name, from email, reply to and email markup) click on '`Other Email Settings`'.
+SuprSend handles common responsive behaviors such as:
+
+- **Column stacking**- Multi-column rows stack vertically on mobile
+- **Font size and padding**- Automatically adjusted for smaller screens
+
+<Tip>
+  You can show or hide specific elements on desktop and mobile individually. Padding and alignment can also be customized separately per device.
+</Tip>
+
+## Adding Dynamic Content in Email
+
+Dynamic content (e.g. name, location, order details) is added in an email for personalizing it to each user. We add **Variables** in tempaltes to achieve this. While rendering email, these variables convert to actual values personlaized to their user.
+
+**Adding Variables:**
+SuprSend uses [Handlebars language](https://handlebarsjs.com/guide/) to add variables in their templates. They can be used in both the editors- HTML and drag-and-drop. Variables can be used inside any content block (text, buttons, subject lines, etc.) throughout the email.
+
+We use double `{{` curly braces to include variables in the template. However, in case the variable includes any special characters, we instead use triple `{{{` curly braces for the same.
+
+Some use-cases of Variables:
+  - `{{user.name}}` - At parent-level, where variable name is `user`.
+  - `{{event.location.city}}` - For nested variables, where the parent variable is `event`, and property `location` and `city` is nested.
+  - `{{{name>1}}}` - Where a special character is included in the variable.
+  - `{{event.[first name]}}` - In case the variable contains array to be included. To add array names, you need to use an functionality called [Merge Tags](/docs/email-template#adding-merge-tags).
+
+
+<Note>
+  In handlebars language, the special character carry a meaning. This is why on printing variables lke `{{{name>1}}`, it might not acquire the expected value later when rendered. Therefore, to avoid this use triple `{{{` curly braces for variables with special characters.
+</Note>
+
+### Add values in Mock Data
+
+For using variables in the template, you need to add sample values for them in the `Mock Data` button present at the top-right section. [Learn how to add mock data](/docs/templates#adding-dynamic-content)
+
+![](/images/docs/a647239-image.png)
+
+After adding Mock data, you can see the variables in the auto-suggestions, as you write the template.
+Auto-suggestions could be seen while initiating `{` somewhere, or while using Merge Tags.
+
+  <Frame caption="Variable Suggestions on typing '{'">
+    <img src="/images/docs/24e247d-Screenshot_2021-11-21_at_7.23.25_PM.png" />
+  </Frame>
+
+### Adding Merge Tags
+
+  Merge tags allow end-users to dynamically insert variable content into their email. These variables are replaced with actual values during email send, based on the trigger data.
+  Merge tags can be inserted into a block of text by clicking on the “Merge Tags” button in the text editor toolbar. The button will only appear if variables are already defined in the global Mock Data panel.
+
+  <Warning>
+    The Merge Tag button only appears when variables are alreadydefined in the global Mock Data panel.
+  </Warning>
+
+### Adding Array Elements
+
+Arrays in email templates allow you to dynamically display lists of items (like products, orders, or notifications). Unlike simple variables, array elements require a special approach using **Merge Tags** since they don't appear in the standard dropdown suggestions when typing `{`.
+
+  Arrays are perfect for scenarios like:
+  - Product catalogs with multiple items
+  - Order summaries with line items
+  - Notification lists
+  - Dynamic content blocks
+
+Follow these steps to add array elements to your email template:
+
+<Steps>
+  <Step title="Define your array structure in Mock Data">
+    First, declare your array object in the **Mock Data** panel. For example, if you want to display a list of products, define an array like this:
+
+    ```json
+    {
+      "products": [
+        {
+          "name": "Premium Headphones",
+          "image": "https://example.com/headphones.jpg",
+          "price": "$299"
+        },
+        {
+          "name": "Wireless Mouse",
+          "image": "https://example.com/mouse.jpg",
+          "price": "$49"
+        }
+      ]
+    }
+    ```
+
+    ![](/images/docs/137de20-c5f7859-Screenshot_2021-11-20_at_6.08.07_PM.png "Sample array structure in Mock Data")
+  </Step>
+
+  <Step title="Select a Row for dynamic content">
+    In your email template, select a **Row** component where you want to display the array elements. You'll notice an additional button appears in the bottom left corner of the row.
+
+    ![](/images/docs/1bfe489-Screenshot_2021-11-22_at_2.33.08_PM.png "Row selection with dynamic content button")
+  </Step>
+
+  <Step title="Associate the array with the row">
+    Click the dynamic content button to see all arrays defined in your Mock Data. Select the array you want to use in this row.
+
+    ![](/images/docs/05cb7c2-Screenshot_2021-11-22_at_2.36.16_PM.png "Array selection dropdown")
+
+    <Frame caption="The selected row will turn green to indicate it's now associated with array elements">
+      <img src="/images/docs/a4b4ac9-Screenshot_2021-11-22_at_2.41.20_PM.png" />
+    </Frame>
+  </Step>
+
+  <Step title="Add array variables to your content">
+    Once associated, array element variables will appear in auto-suggestions when you type `{` or click 'Merge Tags'. Select the variables you want to display, and the row will automatically repeat for each array element when the email is sent.
+
+    ![](/images/docs/f9ef60f-Screenshot_2021-11-22_at_2.44.44_PM.png "Array variables in auto-suggestions")
+  </Step>
+</Steps>
+
+<Tip>
+  **Pro tip**: You can use array variables like `{{products.0.name}}` to access specific array elements, or use the row association method above for dynamic repetition.
+</Tip>
+
+---
 
 ![1386](/images/docs/b1145ee-Screenshot_2021-10-20_at_1.27.36_PM.png "Screenshot 2021-10-20 at 1.27.36 PM.png")
 
@@ -60,76 +224,6 @@ To add other details (subject, from name, from email, reply to and email markup)
   </Tip>
 </Accordion>
 
-## Adding dynamic content in email
-
-There will always be the case where you would be required to add dynamic content to a template, so as to personalise it for your users. To achieve this, you can add variables in the template, which will be replaced with the dynamic content at the time of sending email. To send actual values to replace variables at the time of communication trigger, use one of our frontend or backend SDKs. Here is a step by step guide on how to add dynamic content in a template:
-
-<Steps>
-  <Step title="Declaring Variables in the global 'Variables' button:" stepNumber="1">
-    If you are at this stage, it is assumed that you have declared the variables along with sample values in the global **Mock data** button. To see how to declare variables before using them in designing templates, refer to [this section in the Templates documentation](/docs/templates#adding-dynamic-content).
-  </Step>
-
-  <Step title="Using variables in the templates:" stepNumber="2">
-    Once the variables are declared, you can use them while designing template for any channel. We support `handlebarsjs` to add variables in the template. As a general rule, all the variables have to be entered within double curly brackets: **\`\{\{variable\_name}}**
-
-    Below are some examples of how to enter variables in the template design. For illustration, we are using the same sample variable names that we declared in the 'Templates' section:
-
-    1. To enter a nested variable, enter in the format `{{var1.var2.var3}}`. e.g. to refer to city in the example above, you need to enter `{{event.location.city}}`
-
-    2. If you have any space in the variable name, enclose it in square bracket `{{event.[first name]}}`
-
-    3. To add array names, you need to use an email functionality called **Merge Tags** . Scroll below to the Merge Tags section.
-
-    </Step>
-</Steps>
-
-    ### Auto-suggestions in email
-
-    If you have defined the variables before hand, they will come as auto-suggestions. This will remove the chances of error like variable mismatch at the time of template rendering. You can get auto-suggestions when you type a curly bracket `{`, or you can use a functionality called 'Merge Tags'.
-
-    <Frame caption="Variable Suggestions on typing '{'">
-      <img src="/images/docs/24e247d-Screenshot_2021-11-21_at_7.23.25_PM.png" />
-    </Frame>
-
-    ### Merge Tags
-
-    Merge tags allow end-users to dynamically add content to their email. Merge tags can be inserted into a block of text by clicking on the "Merge Tags" button in the text editor toolbar. The button is not shown if no variables are defined in the global **Variables** button. This is how 'Merge Tags' looks when you click on a Content block.
-
-    ![](/images/docs/e5ad9be-Screenshot_2021-11-22_at_12.26.23_PM.png "Screenshot 2021-11-22 at 12.26.23 PM.png")
-
-    ### Adding array elements
-
-    In email, there is a difference on how to add array elements in the template, which can be used to send a list of items which could be dynamic in nature. If you have noticed, you do not get array elements in the drop-down suggestion when you type `{` In order to add array element, you will be required to necessarily use a functionality called **Merge Tags**. Follow these steps to add variable for array element in an email template:
-
-    <Steps>
-      <Step title="Write an Array Object as per the sample below:">
-        Declare an array object in the **`Variables`** button. Below is a sample of variables defined. Note that variable `array` has a list of product items, with product\_name, product\_image, and product\_price as array properties. Save it.
-
-        ![](/images/docs/137de20-c5f7859-Screenshot_2021-11-20_at_6.08.07_PM.png "c5f7859-Screenshot_2021-11-20_at_6.08.07_PM.png")
-      </Step>
-
-      <Step title="Pick a Row of your choice:">
-        Select a **Row** in which you want to add dynamic content of an array. You will see an additional button on the bottom left corner.
-
-        ![](/images/docs/1bfe489-Screenshot_2021-11-22_at_2.33.08_PM.png "Screenshot 2021-11-22 at 2.33.08 PM.png")
-      </Step>
-
-      <Step title="Select the arrays you want to add:">
-        When you click on it, you will see the list of all arrays that you have declared in the global **Variables** button. Select the array whose variables you want to add in the row.
-
-        ![](/images/docs/05cb7c2-Screenshot_2021-11-22_at_2.36.16_PM.png "Screenshot 2021-11-22 at 2.36.16 PM.png")
-
-        <Frame caption="On associating an array element with the Row, you will see the color of selected row change to Green.">
-          <img src="/images/docs/a4b4ac9-Screenshot_2021-11-22_at_2.41.20_PM.png" />
-        </Frame>
-      </Step>
-
-      <Step title="Select the variables of choice:">
-        Once selected, you will start seeing the array elements variables in the auto-suggestions. (You can type `{` or click on 'Merge Tags' to get the suggestion values). Select the desired variable, and the row will be repeated for all the elements that come at the time of email trigger.
-
-        ![](/images/docs/f9ef60f-Screenshot_2021-11-22_at_2.44.44_PM.png "Screenshot 2021-11-22 at 2.44.44 PM.png")
-      </Step>
-    </Steps>
 
 
 ## Display email blocks based on condition
